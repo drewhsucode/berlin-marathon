@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berlin Marathon Fundraiser</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #f7f4ef;
+    --white: #1a1a1a;
+    --red: #e8291c;
+    --yellow: #c8950a;
+    --gray: #ede9e1;
+    --muted: #888;
+    --border: #d5cfc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 20px;
+  }
+
+  .flag-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #000 33.3%, #d00 33.3% 66.6%, #ffcc00 66.6%);
+  }
+
+  .kicker {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .kicker::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background: var(--yellow);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 110px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+  }
+
+  h1 span {
+    color: var(--red);
+    display: block;
+  }
+
+  .header-meta {
+    text-align: right;
+  }
+
+  .match-badge {
+    background: var(--yellow);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .header-meta p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 200px;
+    margin-left: auto;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 60px;
+    align-items: start;
+  }
+
+  /* ── PROGRESS SECTION ── */
+  .progress-section { }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+  }
+
+  .progress-label .raised {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .progress-label .goal {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .progress-label .goal span {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .progress-track {
+    position: relative;
+    height: 20px;
+    background: var(--gray);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), #ff6b3d);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: white;
+    opacity: 0.6;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .progress-runner {
+    position: absolute;
+    right: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    transition: left 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 6px rgba(232,41,28,0.7));
+  }
+
+  .progress-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--yellow);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── DONOR LOG ── */
+  .donor-section {
+    margin-top: 50px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .donor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .donor-row {
+    display: grid;
+    grid-template-columns: 40px 1fr auto auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #fff;
+    border-left: 0px solid var(--red);
+    transition: all 0.2s;
+    opacity: 0;
+    transform: translateX(-10px);
+    animation: slideIn 0.4s ease forwards;
+  }
+
+  .donor-row:hover {
+    background: #f0ece4;
+    border-left-width: 3px;
+    padding-left: 13px;
+  }
+
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .donor-rank {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .donor-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .donor-info { }
+
+  .donor-name {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--white);
+  }
+
+  .donor-message {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  .donor-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--yellow);
+    white-space: nowrap;
+  }
+
+  .donor-date {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── DONATE SIDEBAR ── */
+  .donate-sidebar {
+    position: sticky;
+    top: 40px;
+  }
+
+  .donate-card {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+
+  .donate-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+
+  .donate-card > p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .amount-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .amt-btn {
+    padding: 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-radius: 2px;
+  }
+
+  .amt-btn:hover, .amt-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+  }
+
+  .custom-amount {
+    width: 100%;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    margin-bottom: 16px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .custom-amount:focus {
+    border-color: var(--red);
+  }
+
+  .custom-amount::placeholder { color: var(--muted); }
+
+  .name-input, .message-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .name-input:focus, .message-input:focus {
+    border-color: var(--yellow);
+  }
+
+  .name-input::placeholder, .message-input::placeholder { color: var(--muted); }
+
+  .anon-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .anon-toggle input { display: none; }
+
+  .toggle-track {
+    width: 38px;
+    height: 20px;
+    background: #ccc;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  .anon-toggle input:checked ~ .toggle-track {
+    background: var(--yellow);
+    border-color: var(--yellow);
+  }
+
+  .anon-toggle input:checked ~ .toggle-track .toggle-thumb {
+    left: 20px;
+    background: var(--black);
+  }
+
+  .anon-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .venmo-btn {
+    width: 100%;
+    padding: 16px;
+    background: #008CFF;
+    color: white;
+    border: none;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .venmo-btn:hover {
+    background: #0077dd;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0,140,255,0.3);
+  }
+
+  .venmo-btn:active { transform: translateY(0); }
+
+  .venmo-icon {
+    width: 22px;
+    height: 22px;
+    fill: white;
+  }
+
+  .venmo-note {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* ── RACE BIB FLOURISH ── */
+  .bib {
+    border: 2px solid var(--border);
+    padding: 20px;
+    text-align: center;
+    margin-top: 24px;
+    position: relative;
+  }
+
+  .bib::before, .bib::after {
+    content: '●';
+    position: absolute;
+    top: -8px;
+    font-size: 12px;
+    color: var(--border);
+    background: var(--gray);
+    padding: 0 4px;
+  }
+
+  .bib::before { left: 20px; }
+  .bib::after { right: 20px; }
+
+  .bib-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .bib-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .bib-name {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 40px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  footer strong { color: var(--white); }
+
+  /* ── MATCH METER ── */
+  .match-section {
+    margin-top: 32px;
+    padding: 20px;
+    border: 1px dashed var(--border);
+    position: relative;
+  }
+
+  .match-section-title {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+  }
+
+  .match-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .match-bar-item { }
+
+  .match-bar-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .match-bar-track {
+    height: 6px;
+    background: #d5cfc4;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .match-bar-fill-you {
+    height: 100%;
+    background: var(--red);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+  }
+
+  .match-bar-fill-match {
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+  }
+
+  .match-bar-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--white);
+  }
+
+  .match-total {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .match-total-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .match-total-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--yellow);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    header {
+      grid-template-columns: 1fr;
+      padding: 50px 24px 30px;
+    }
+    .header-meta { text-align: left; }
+    .header-meta p { margin-left: 0; }
+    main {
+      grid-template-columns: 1fr;
+      padding: 40px 24px;
+      gap: 40px;
+    }
+    .donate-sidebar { position: static; }
+    footer { padding: 24px; }
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--yellow);
+    color: var(--black);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 12px 20px;
+    border-radius: 2px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flag-stripe"></div>
+  <div>
+    <div class="kicker">🏃 Berlin Marathon 2025 · Fundraiser</div>
+    <h1>Running<span>for Good</span></h1>
+  </div>
+  <div class="header-meta">
+    <div class="match-badge">🤝 Company Match Active</div>
+    <p>Every dollar you send gets matched — doubling your impact.</p>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT: Progress + Donors -->
+  <div>
+    <section class="progress-section">
+      <div class="progress-label">
+        <div class="raised" id="raised-display">$0</div>
+        <div class="goal">Goal: <span>$2,000</span></div>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill">
+          <span class="progress-runner">🏃</span>
+        </div>
+      </div>
+
+      <div class="progress-stats">
+        <div class="stat">
+          <span class="stat-value" id="pct-display">0%</span>
+          <span class="stat-label">Funded</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="donor-count">0</span>
+          <span class="stat-label">Donors</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value" id="remaining-display">$2,000</span>
+          <span class="stat-label">To Goal</span>
+        </div>
+      </div>
+
+      <div class="match-section">
+        <div class="match-section-title">💛 With Company Match</div>
+        <div class="match-bars">
+          <div class="match-bar-item">
+            <div class="match-bar-label">You raised</div>
+            <div class="match-bar-track"><div class="match-bar-fill-you" id="match-fill-you"></div></div>
+            <div class="match-bar-val" id="match-you-val">$0</div>
+          </div>
+          <div class="match-bar-item">
+            <div class="match-bar-label">Company matches</div>
+            <div class="match-bar-track"><div class="match-bar-fill-match" id="match-fill-match"></div></div>
+            <div class="match-bar-val" id="match-match-val">$0</div>
+          </div>
+        </div>
+        <div class="match-total">
+          <span class="match-total-label">Total Impact</span>
+          <span class="match-total-val" id="match-total-val">$0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="donor-section">
+      <h2 class="section-title">Supporters</h2>
+      <div class="donor-list" id="donor-list">
+        <!-- Donors rendered here -->
+      </div>
+    </section>
+  </div>
+
+  <!-- RIGHT: Donate -->
+  <div class="donate-sidebar">
+    <div class="donate-card">
+      <h2>Donate via Venmo</h2>
+      <p>Venmo me directly — then add your name & note below so I can track it here. Every cent goes toward the race.</p>
+
+      <div class="amount-grid">
+        <button class="amt-btn" onclick="selectAmount(25)">$25</button>
+        <button class="amt-btn" onclick="selectAmount(50)">$50</button>
+        <button class="amt-btn" onclick="selectAmount(100)">$100</button>
+        <button class="amt-btn" onclick="selectAmount(200)">$200</button>
+      </div>
+
+      <input type="number" class="custom-amount" id="custom-amount" placeholder="Or enter custom amount ($)" min="1">
+
+      <input type="text" class="name-input" id="donor-name" placeholder="Your name (shown on page)">
+      <input type="text" class="message-input" id="donor-message" placeholder="Leave a message (optional)">
+
+      <label class="anon-toggle">
+        <input type="checkbox" id="anon-check">
+        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        <span class="anon-label">Donate anonymously</span>
+      </label>
+
+      <a class="venmo-btn" id="venmo-link" href="#" target="_blank" onclick="handleVenmo(event)">
+        <svg class="venmo-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.5 2C20.3 3.7 20.6 5.3 20.6 7.3c0 5.9-5.1 13.6-9.3 19H4.5L1.5 2.9l6.4-.6 1.7 13.3C11.5 12 13 7.3 13 4.4c0-1.6-.3-2.7-.7-3.6L19.5 2z"/>
+        </svg>
+        Open Venmo
+      </a>
+      <p class="venmo-note">After sending, click "I've sent it!" to add your name to the board.</p>
+
+      <button class="amt-btn" style="width:100%;margin-top:8px;padding:14px;font-size:14px;letter-spacing:0.05em;background:#eee;" onclick="logDonation()">
+        ✅ I've sent it! Add me to the board
+      </button>
+    </div>
+
+    <div class="bib">
+      <div class="bib-label">Race Bib</div>
+      <div class="bib-number">#4291</div>
+      <div class="bib-name">YOUR NAME · Berlin 2025</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Running 26.2 miles through Berlin on <strong>September 28, 2025</strong> · All donations go directly to the cause · Built with ❤️
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ──
+  const GOAL = 2000;
+  const VENMO_USERNAME = 'your-venmo-username'; // ← CHANGE THIS
+
+  // ── SEED DATA (pre-existing donors) ──
+  const INITIAL_DONORS = [
+    { name: 'Sarah K.', amount: 100, message: 'Go crush it!! 🔥', date: 'May 10', color: '#e8291c' },
+    { name: 'Anonymous', amount: 50,  message: 'Rooting for you!', date: 'May 9',  color: '#555' },
+    { name: 'Mike & Jen', amount: 200, message: 'Berlin here we come!', date: 'May 8', color: '#2196F3' },
+    { name: 'Anonymous', amount: 25,  message: '',                date: 'May 7',  color: '#555' },
+  ];
+
+  let donors = [...INITIAL_DONORS];
+  let selectedAmount = null;
+
+  // ── SELECTED AMOUNT ──
+  function selectAmount(val) {
+    selectedAmount = val;
+    document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('custom-amount').value = '';
+  }
+
+  function getAmount() {
+    const custom = document.getElementById('custom-amount').value;
+    return custom ? parseFloat(custom) : selectedAmount;
+  }
+
+  // ── VENMO LINK ──
+  function handleVenmo(e) {
+    const amt = getAmount();
+    if (!amt || amt <= 0) {
+      e.preventDefault();
+      showToast('Please select or enter an amount first!');
+      return;
+    }
+    const note = encodeURIComponent(`Berlin Marathon Fundraiser 🏃‍♂️`);
+    document.getElementById('venmo-link').href =
+      `https://venmo.com/${VENMO_USERNAME}?txn=pay&amount=${amt}&note=${note}`;
+  }
+
+  // ── LOG DONATION ──
+  function logDonation() {
+    const amt = getAmount();
+    const nameInput = document.getElementById('donor-name').value.trim();
+    const msg = document.getElementById('donor-message').value.trim();
+    const isAnon = document.getElementById('anon-check').checked;
+
+    if (!amt || amt <= 0) { showToast('Please enter an amount!'); return; }
+
+    const displayName = isAnon ? 'Anonymous' : (nameInput || 'Friend');
+    const colors = ['#e8291c','#f5c518','#2196F3','#4CAF50','#9C27B0','#FF9800'];
+    const color = isAnon ? '#555' : colors[Math.floor(Math.random() * colors.length)];
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    donors.unshift({ name: displayName, amount: amt, message: msg, date: dateStr, color });
+
+    renderDonors();
+    updateProgress();
+
+    document.getElementById('donor-name').value = '';
+    document.getElementById('donor-message').value = '';
+    document.getElementById('donor-message').value = '';
+    document.getElementById('custom-amount').value = '';
+    document.getElementById('anon-check').checked = false;
+    document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('active'));
+    selectedAmount = null;
+
+    showToast(`🎉 Thanks${isAnon ? '' : (nameInput ? ', ' + nameInput : '')}! You're on the board!`);
+  }
+
+  // ── RENDER DONORS ──
+  function renderDonors() {
+    const list = document.getElementById('donor-list');
+    const sorted = [...donors].sort((a, b) => b.amount - a.amount);
+    list.innerHTML = sorted.map((d, i) => {
+      const initials = d.name === 'Anonymous' ? '?' : d.name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      return `
+        <div class="donor-row" style="animation-delay:${i * 60}ms">
+          <div class="donor-rank">${i + 1}</div>
+          <div class="donor-avatar" style="background:${d.color}22;color:${d.color}">${initials}</div>
+          <div class="donor-info">
+            <div class="donor-name">${d.name}</div>
+            ${d.message ? `<div class="donor-message">"${d.message}"</div>` : ''}
+          </div>
+          <div class="donor-amount">$${d.amount}</div>
+          <div class="donor-date">${d.date}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ── UPDATE PROGRESS ──
+  function updateProgress() {
+    const total = donors.reduce((s, d) => s + d.amount, 0);
+    const pct = Math.min((total / GOAL) * 100, 100);
+
+    document.getElementById('raised-display').textContent = '$' + total.toLocaleString();
+    document.getElementById('pct-display').textContent = Math.round(pct) + '%';
+    document.getElementById('donor-count').textContent = donors.length;
+    document.getElementById('remaining-display').textContent = '$' + Math.max(GOAL - total, 0).toLocaleString();
+
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    // Match bars
+    const matchPct = Math.min((total / GOAL) * 100, 100);
+    document.getElementById('match-fill-you').style.width = matchPct + '%';
+    document.getElementById('match-fill-match').style.width = matchPct + '%';
+    document.getElementById('match-you-val').textContent = '$' + total.toLocaleString();
+    document.getElementById('match-match-val').textContent = '$' + total.toLocaleString();
+    document.getElementById('match-total-val').textContent = '$' + (total * 2).toLocaleString();
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── INIT ──
+  renderDonors();
+  setTimeout(updateProgress, 100);
+</script>
+</body>
+</html>
