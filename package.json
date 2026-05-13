@@ -1,0 +1,8 @@
+{
+  "name": "berlin-marathon-fundraiser",
+  "version": "1.0.0",
+  "description": "Berlin Marathon 2025 fundraising page",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
