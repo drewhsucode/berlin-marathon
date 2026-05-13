@@ -1,5 +1,4 @@
 [build]
-  base      = "berlin-marathon"
   publish   = "public"
   functions = "netlify/functions"
 
