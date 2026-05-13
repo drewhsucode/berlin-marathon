@@ -5,7 +5,7 @@ window.CAMPAIGN = {
     defaultAmounts: [25, 50, 100, 250, 500],
     defaultSelected: 100,
     fundraisingDeadline: '2026-09-25T23:59:59',
-    goalAmount: 5250,
+    goalAmount: 5270,
     heroBannerUrl: './images/three_amigos.png',
     raceDate: '2026-09-27',
     team: [

@@ -190,6 +190,15 @@ body {
     .progress-card {
         position: static;
     }
+    .charity-link {
+        display: table;
+        margin: 8px auto 0;
+        white-space: normal;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        padding: 10px 16px;
+        text-align: center;
+    }
 }
 
 .section-eyebrow {
@@ -220,16 +229,20 @@ body {
     background: var(--charcoal);
     color: var(--gold);
     text-decoration: none;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    padding: 12px 24px;
+    padding: 12px 20px;
     border-radius: 3px;
     margin-top: 8px;
     transition:
         background 0.2s,
         transform 0.15s;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .charity-link:hover {
     background: var(--red);
@@ -330,7 +343,7 @@ body {
     margin-bottom: 24px;
     position: sticky;
     top: 20px;
-    animation: fadeUp 0.9s 0.1s ease both;
+    isolation: isolate;
 }
 .progress-raised-label {
     font-size: 11px;
@@ -391,6 +404,7 @@ body {
     border-radius: 8px;
     border: 1px solid var(--border);
     padding: 28px;
+    isolation: isolate;
 }
 .donate-form-title {
     font-family: var(--font-serif);
