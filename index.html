@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Berlin Marathon Fundraiser</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+            rel="stylesheet"
+        />
+        <script src="./config.js" type="text/javascript"></script>
+        <link href="./styles.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="hero">
+            <div class="hero-bg" id="hero-bg"></div>
+            <div class="hero-content">
+                <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px">
+                    <p class="hero-eyebrow" id="hero-eyebrow">
+                        Berlin Marathon · Loading…
+                    </p>
+                    <h1 class="hero-title">
+                        Running for<br /><em>Something Bigger</em>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Three friends. 26.2 miles. One cause that matters.<br />
+                        Help us support the
+                        <span id="hero-charity-name">the Foundation</span> in
+                        the fight against cystic fibrosis.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="countdown-strip">
+            <div class="cd-label">⏳ Fundraising closes</div>
+            <div class="cd-units">
+                <div class="cd-unit">
+                    <span class="cd-num" id="cd-d">--</span
+                    ><span class="cd-lbl">days</span>
+                </div>
+                <div class="cd-unit">
+                    <span class="cd-num" id="cd-h">--</span
+                    ><span class="cd-lbl">hrs</span>
+                </div>
+                <div class="cd-unit">
+                    <span class="cd-num" id="cd-m">--</span
+                    ><span class="cd-lbl">min</span>
+                </div>
+                <div class="cd-unit">
+                    <span class="cd-num" id="cd-s">--</span
+                    ><span class="cd-lbl">sec</span>
+                </div>
+            </div>
+            <div class="cd-deadline" id="cd-deadline-text">—</div>
+        </div>
+
+        <div class="main-wrapper">
+            <div>
+                <p class="section-eyebrow">Our Story</p>
+                <h2 class="section-title">Why We're Running</h2>
+                <p class="story-body">
+                    We are three friends who decided to do something a little
+                    crazy, sign up for the Berlin Marathon!! We are using every
+                    step as an opportunity to raise money for a special cause.
+                </p>
+                <p class="story-body">
+                    We're fundraising for the
+                    <strong id="story-charity-name">the Foundation</strong>,
+                    which funds research, education, and quality-of-life
+                    programs for those living with
+                    <strong>Cystic Fibrosis</strong>. CF is a life-threatening
+                    genetic disease affecting the lungs and digestive system,
+                    and every dollar we raise helps bring the CF community
+                    closer to a cure.
+                </p>
+                <p class="story-body">
+                    Our goal is to raise
+                    <strong id="story-goal">$5,250</strong> before our deadline.
+                    Every single donation, large or small, makes a real
+                    difference. Thank you thank you thank you from the bottom of
+                    our hearts. See you in Berlin!! 🇩🇪😎🇩🇪
+                </p>
+                <a
+                    href="#"
+                    id="charity-btn"
+                    target="_blank"
+                    class="charity-link"
+                >
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    >
+                        <path
+                            d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"
+                        />
+                    </svg>
+                    <span id="charity-btn-text">Visit the Foundation</span>
+                </a>
+
+                <div class="donors-section">
+                    <div class="donors-header">
+                        <h3 class="donors-title">Our Donors</h3>
+                        <span class="count-badge" id="donor-count">0</span>
+                    </div>
+                    <div class="donor-list" id="donor-list">
+                        <p class="donor-loading">Loading donors…</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="progress-card">
+                    <p class="progress-raised-label">Total Raised</p>
+                    <div class="progress-header">
+                        <span class="raised-amount" id="raised-display"
+                            >$0</span
+                        >
+                        <span class="progress-goal" id="goal-display"
+                            >of $5,250</span
+                        >
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="pstat">
+                            <div class="val" id="pct-display">0%</div>
+                            <div class="lbl">funded</div>
+                        </div>
+                        <div class="pstat">
+                            <div class="val" id="donors-stat">0</div>
+                            <div class="lbl">donors</div>
+                        </div>
+                        <div class="pstat">
+                            <div class="val" id="remaining-display">—</div>
+                            <div class="lbl">to go</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="donate-form">
+                    <h3 class="donate-form-title">Make a Donation</h3>
+
+                    <label class="form-label">Choose an amount</label>
+                    <div class="amount-grid" id="amount-grid"></div>
+
+                    <div class="custom-wrap" id="custom-wrap">
+                        <span class="dollar">$</span>
+                        <input
+                            class="custom-input"
+                            type="number"
+                            id="custom-amount"
+                            placeholder="Enter amount"
+                            min="1"
+                            step="1"
+                        />
+                    </div>
+
+                    <label class="form-label">Your name</label>
+                    <input
+                        class="form-input"
+                        type="text"
+                        id="donor-name"
+                        placeholder="Mac Miller"
+                    />
+
+                    <label class="form-label"
+                        >Leave a message
+                        <span
+                            style="
+                                font-weight: 400;
+                                text-transform: none;
+                                letter-spacing: 0;
+                            "
+                            >(optional)</span
+                        ></label
+                    >
+                    <textarea
+                        class="form-textarea"
+                        id="donor-message"
+                        placeholder="go team! so proud of yall 🤠"
+                    ></textarea>
+
+                    <label class="anon-toggle">
+                        <input type="checkbox" id="anon-check" />
+                        <span class="toggle-track"></span>
+                        <span class="anon-label">Donate anonymously</span>
+                    </label>
+
+                    <button
+                        class="venmo-btn"
+                        id="venmo-btn"
+                        onclick="openModal()"
+                    >
+                        <svg
+                            class="venmo-wordmark"
+                            viewBox="0 0 194.46875 35.71875"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-label="Venmo"
+                        >
+                            <g transform="translate(-5.7593441,-130.66032)">
+                                <g
+                                    transform="matrix(0.9244437,0,0,0.89314785,5.7593441,129.92613)"
+                                >
+                                    <path
+                                        d="m 34.5771,0.822021 c 1.4203,2.345309 2.0606,4.760989 2.0606,7.812489 0,9.73269 -8.31,22.37619 -15.0545,31.25429 H 6.17825 L 0,2.95296 13.4887,1.67258 16.7552,27.9548 c 3.0522,-4.9714 6.8186,-12.7838 6.8186,-18.11027 0,-2.91551 -0.4995,-4.90135 -1.2803,-6.53647 z"
+                                        fill="white"
+                                    />
+                                    <path
+                                        d="m 52.0595,17.0887 c 2.4822,0 8.7312,-1.1353 8.7312,-4.6863 0,-1.7051 -1.2059,-2.55564 -2.627,-2.55564 -2.4861,0 -5.7487,2.98074 -6.1042,7.24194 z m -0.2844,7.0327 c 0,4.3359 2.4114,6.037 5.6083,6.037 3.4813,0 6.8145,-0.8506 11.1469,-3.0519 l -1.6318,11.0787 c -3.0525,1.4911 -7.8097,2.4861 -12.4272,2.4861 -11.7129,0 -15.9049,-7.102 -15.9049,-15.9805 0,-11.5074 6.8189,-23.7262 20.8772,-23.7262 7.7401,0 12.0681,4.33553 12.0681,10.3725 7e-4,9.7324 -12.4929,12.7139 -19.7366,12.7843 z"
+                                        fill="white"
+                                    />
+                                    <path
+                                        d="m 110.439,9.34835 c 0,1.42035 -0.215,3.48055 -0.43,4.82695 l -4.047,25.5721 H 92.8275 l 3.6921,-23.4415 c 0.07,-0.6358 0.2852,-1.9158 0.2852,-2.626 0,-1.7052 -1.0655,-2.1306 -2.3465,-2.1306 -1.7015,0 -3.407,0.7805 -4.5428,1.3504 l -4.1877,26.848 H 72.5195 L 78.5537,1.46185 h 11.4318 l 0.1447,3.05588 c 2.697,-1.77549 6.2483,-3.695708 11.2868,-3.695708 6.676,-7.3e-4 9.022,3.409878 9.022,8.526328 z"
+                                        fill="white"
+                                    />
+                                    <path
+                                        d="m 149.432,5.15577 c 3.762,-2.69641 7.314,-4.19117 12.211,-4.19117 6.744,0 9.09,3.41061 9.09,8.52707 0,1.42043 -0.215,3.48063 -0.429,4.82703 l -4.043,25.572 h -13.138 l 3.763,-23.9369 c 0.069,-0.6399 0.215,-1.4204 0.215,-1.9155 0,-1.9199 -1.066,-2.3457 -2.347,-2.3457 -1.631,0 -3.262,0.7102 -4.473,1.3504 l -4.187,26.8481 H 132.96 l 3.762,-23.937 c 0.069,-0.6398 0.211,-1.4203 0.211,-1.9154 0,-1.9199 -1.067,-2.3457 -2.343,-2.3457 -1.705,0 -3.407,0.7805 -4.543,1.3504 l -4.191,26.8481 h -13.204 l 6.034,-38.28598 h 11.292 l 0.355,3.19624 c 2.627,-1.91548 6.175,-3.835703 10.932,-3.835703 4.119,-0.001458 6.815,1.774393 8.167,4.189713 z"
+                                        fill="white"
+                                    />
+                                    <path
+                                        d="m 196.869,16.3076 c 0,-3.1255 -0.782,-5.2564 -3.123,-5.2564 -5.183,0 -6.248,9.1621 -6.248,13.8491 0,3.5557 0.995,5.7563 3.336,5.7563 4.899,0 6.035,-9.6624 6.035,-14.349 z m -22.719,8.0269 c 0,-12.0737 6.389,-23.371121 21.088,-23.371121 11.076,0 15.125,6.536471 15.125,15.558621 0,11.9336 -6.32,24.292 -21.374,24.292 -11.147,0 -14.839,-7.317 -14.839,-16.4795 z"
+                                        fill="white"
+                                    />
+                                </g>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-section">
+            <p class="section-eyebrow">The Team</p>
+            <h2 class="section-title">Meet Your Runners</h2>
+            <hr class="gold-divider" />
+            <div class="team-grid" id="team-grid"></div>
+        </div>
+
+        <div class="footer">
+            <p>
+                All proceeds go directly to the
+                <a href="#" id="footer-charity-link" target="_blank"></a>,
+                <span id="footer-charity-blurb"></span>.
+            </p>
+            <p style="margin-top: 6px">
+                Berlin Marathon · <span id="footer-race-date"></span> ·
+                Fundraising deadline <span id="footer-deadline"></span>
+            </p>
+            <p style="margin-top: 6px">
+                Questions?
+                <a
+                    href="https://instagram.com/dreeeeeeeeeeeeeeeew"
+                    target="_blank"
+                    >DM us on Instagram</a
+                >.
+            </p>
+        </div>
+
+        <div
+            class="modal-overlay"
+            id="modal"
+            onclick="if (event.target === this) closeModal();"
+        >
+            <div class="modal-box">
+                <p
+                    style="
+                        font-size: 13px;
+                        font-weight: 600;
+                        letter-spacing: 0.12em;
+                        text-transform: uppercase;
+                        color: var(--gold-dark);
+                        margin-bottom: 6px;
+                    "
+                >
+                    Thank you
+                </p>
+                <h3 class="modal-title">
+                    You're donating
+                    <span id="modal-amount" style="color: var(--red)"
+                        >$100</span
+                    >
+                </h3>
+                <div class="modal-steps">
+                    <div class="modal-step">
+                        <div class="step-num">1</div>
+                        <div class="step-text">
+                            <strong>Tap "Venmo" below</strong>
+                            <span>Opens Venmo app or website</span>
+                        </div>
+                    </div>
+                    <div class="modal-step">
+                        <div class="step-num">2</div>
+                        <div class="step-text">
+                            <strong
+                                >Send <span id="modal-amount-2">$100</span> to
+                                @<span id="modal-handle"></span
+                            ></strong>
+                            <span id="modal-note-hint"
+                                >Send me a silly note if you are feeling
+                                silly</span
+                            >
+                        </div>
+                    </div>
+                    <div class="modal-step">
+                        <div class="step-num">3</div>
+                        <div class="step-text">
+                            <strong>Come back &amp; click "I sent it !"</strong>
+                            <span
+                                >We'll add your name to the donor wall :D</span
+                            >
+                        </div>
+                    </div>
+                </div>
+                <a
+                    class="venmo-modal-btn"
+                    id="venmo-deep-link"
+                    href="#"
+                    target="_blank"
+                >
+                    <svg
+                        class="venmo-wordmark"
+                        viewBox="0 0 194.46875 35.71875"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-label="Venmo"
+                    >
+                        <g transform="translate(-5.7593441,-130.66032)">
+                            <g
+                                transform="matrix(0.9244437,0,0,0.89314785,5.7593441,129.92613)"
+                            >
+                                <path
+                                    d="m 34.5771,0.822021 c 1.4203,2.345309 2.0606,4.760989 2.0606,7.812489 0,9.73269 -8.31,22.37619 -15.0545,31.25429 H 6.17825 L 0,2.95296 13.4887,1.67258 16.7552,27.9548 c 3.0522,-4.9714 6.8186,-12.7838 6.8186,-18.11027 0,-2.91551 -0.4995,-4.90135 -1.2803,-6.53647 z"
+                                    fill="white"
+                                />
+                                <path
+                                    d="m 52.0595,17.0887 c 2.4822,0 8.7312,-1.1353 8.7312,-4.6863 0,-1.7051 -1.2059,-2.55564 -2.627,-2.55564 -2.4861,0 -5.7487,2.98074 -6.1042,7.24194 z m -0.2844,7.0327 c 0,4.3359 2.4114,6.037 5.6083,6.037 3.4813,0 6.8145,-0.8506 11.1469,-3.0519 l -1.6318,11.0787 c -3.0525,1.4911 -7.8097,2.4861 -12.4272,2.4861 -11.7129,0 -15.9049,-7.102 -15.9049,-15.9805 0,-11.5074 6.8189,-23.7262 20.8772,-23.7262 7.7401,0 12.0681,4.33553 12.0681,10.3725 7e-4,9.7324 -12.4929,12.7139 -19.7366,12.7843 z"
+                                    fill="white"
+                                />
+                                <path
+                                    d="m 110.439,9.34835 c 0,1.42035 -0.215,3.48055 -0.43,4.82695 l -4.047,25.5721 H 92.8275 l 3.6921,-23.4415 c 0.07,-0.6358 0.2852,-1.9158 0.2852,-2.626 0,-1.7052 -1.0655,-2.1306 -2.3465,-2.1306 -1.7015,0 -3.407,0.7805 -4.5428,1.3504 l -4.1877,26.848 H 72.5195 L 78.5537,1.46185 h 11.4318 l 0.1447,3.05588 c 2.697,-1.77549 6.2483,-3.695708 11.2868,-3.695708 6.676,-7.3e-4 9.022,3.409878 9.022,8.526328 z"
+                                    fill="white"
+                                />
+                                <path
+                                    d="m 149.432,5.15577 c 3.762,-2.69641 7.314,-4.19117 12.211,-4.19117 6.744,0 9.09,3.41061 9.09,8.52707 0,1.42043 -0.215,3.48063 -0.429,4.82703 l -4.043,25.572 h -13.138 l 3.763,-23.9369 c 0.069,-0.6399 0.215,-1.4204 0.215,-1.9155 0,-1.9199 -1.066,-2.3457 -2.347,-2.3457 -1.631,0 -3.262,0.7102 -4.473,1.3504 l -4.187,26.8481 H 132.96 l 3.762,-23.937 c 0.069,-0.6398 0.211,-1.4203 0.211,-1.9154 0,-1.9199 -1.067,-2.3457 -2.343,-2.3457 -1.705,0 -3.407,0.7805 -4.543,1.3504 l -4.191,26.8481 h -13.204 l 6.034,-38.28598 h 11.292 l 0.355,3.19624 c 2.627,-1.91548 6.175,-3.835703 10.932,-3.835703 4.119,-0.001458 6.815,1.774393 8.167,4.189713 z"
+                                    fill="white"
+                                />
+                                <path
+                                    d="m 196.869,16.3076 c 0,-3.1255 -0.782,-5.2564 -3.123,-5.2564 -5.183,0 -6.248,9.1621 -6.248,13.8491 0,3.5557 0.995,5.7563 3.336,5.7563 4.899,0 6.035,-9.6624 6.035,-14.349 z m -22.719,8.0269 c 0,-12.0737 6.389,-23.371121 21.088,-23.371121 11.076,0 15.125,6.536471 15.125,15.558621 0,11.9336 -6.32,24.292 -21.374,24.292 -11.147,0 -14.839,-7.317 -14.839,-16.4795 z"
+                                    fill="white"
+                                />
+                            </g>
+                        </g>
+                    </svg>
+                </a>
+                <button
+                    class="venmo-modal-btn"
+                    id="confirm-btn"
+                    onclick="confirmDonation()"
+                    style="
+                        background: var(--charcoal);
+                        margin-bottom: 10px;
+                        cursor: pointer;
+                        border: none;
+                        font-family: var(--font-sans);
+                    "
+                >
+                    ✓ I sent it !
+                </button>
+                <button class="modal-close" onclick="closeModal()">
+                    Cancel, go back
+                </button>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+        <script src="./script.js" type="text/javascript"></script>
+    </body>
+</html>
